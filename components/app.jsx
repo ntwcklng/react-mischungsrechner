@@ -43,27 +43,37 @@ var Mischungsrechner = React.createClass({
       })
       return (
         <div>
-          <form className="pure-form">
-            <fieldset>
+          <form className="form-inline">
+            <div className="form-group">
               <legend>Mischungsverhältnis eingeben</legend>
               <input type="number" placeholder="1" name="1" onChange={this.updateDilInput} value={this.state.dilution1} /> : 
               <input type="number" placeholder="2" name="2" onChange={this.updateDilInput} value={this.state.dilution2} />
-            </fieldset>
+            </div>
           </form>
           <h4>Beliebte Mischungsverhältnisse:</h4>
-          {renderDil}
-          <h3>{this.state.dilution1 !== 0 && this.state.dilution2 !== 0 ? this.state.dilution1 + ':' + this.state.dilution2 : ''}
-          {this.state.bottle !== 0 ? this.state.bottle : ''}</h3>
-          {renderBottle}
-          <h4>{calc !== 0 ? 'Dein Mischungsverhältnis: ' + calc : ''}</h4>
+          <div className="btn-group" role="group">
+            {renderDil}
+          </div>
+          <h4>Flaschengröße:</h4>
+          <div className="btn-group" role="group">
+            {renderBottle}
+          </div>
+          <h4>{calc != 0 ? 'Dein Mischungsverhältnis: ' + calc : ''}</h4>
         </div>
       
       );
   }
 });
 function calculateDil(part1, part2, bottle) {  
-  var parts = parseInt(part1) + parseInt(part2);
-  return parts
+  part1 = parseInt(part1);
+  part2 = parseInt(part2);
+  var parts = part1 + part2;
+  var step = bottle / parts;
+  var res1 = Math.round(step * part1).toFixed(2).split(".");
+  var res2 = Math.round(step * part2).toFixed(2).split(".");
+  var res = res1[0] + ":" + res2[0];
+  return res;
+  
 }
 var Dillution = React.createClass({
   dilClickHandler: function() {
@@ -71,7 +81,7 @@ var Dillution = React.createClass({
   },
   render: function() {
     return(
-      <button className="pure-button" onClick={this.dilClickHandler}>
+      <button type="button" className="btn btn-default" onClick={this.dilClickHandler}>
         {this.props.name}
       </button>
     )
@@ -83,7 +93,7 @@ var Bottle = React.createClass({
   },
   render: function() {
     return(
-      <button className="pure-button" onClick={this.bottleClickHandler}>
+      <button type="button" className="btn btn-default" onClick={this.bottleClickHandler}>
         {this.props.name}
       </button>
     );
