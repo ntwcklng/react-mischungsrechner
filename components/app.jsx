@@ -33,14 +33,14 @@ var Mischungsrechner = React.createClass({
   render: function() {
     if(this.state.dilution1 !== 0 && this.state.dilution2 !== 0 && this.state.bottle !== 0) {
         calc = calculateDil(this.state.dilution1, this.state.dilution2, this.state.bottle);
-      }
+    }
     var self = this;
       var renderDil = this.props.dil.map(function(l) {
         return <Dillution name={l.name} part1={l.part1} part2={l.part2} updateDil={self.updateDil} />
       });
       var renderBottle = this.props.bottle.map(function(l) {
         return <Bottle name={l.name} size={l.size} updateBottle={self.updateBottle} />
-      })
+      });
       return (
         <div>
           <form className="form-inline">
@@ -50,15 +50,15 @@ var Mischungsrechner = React.createClass({
               <input type="number" placeholder="2" name="2" onChange={this.updateDilInput} value={this.state.dilution2} />
             </div>
           </form>
-          <h4>Beliebte Mischungsverhältnisse:</h4>
+          <h5>Beliebte Mischungsverhältnisse:</h5>
           <div className="btn-group" role="group">
             {renderDil}
           </div>
-          <h4>Flaschengröße:</h4>
+          <h5>Flaschengröße:</h5>
           <div className="btn-group" role="group">
             {renderBottle}
           </div>
-          <h4>{calc != 0 ? 'Dein Mischungsverhältnis: ' + calc : ''}</h4>
+          <h2>{calc != 0 ? 'Dein Mischungsverhältnis: ' + calc : ''}</h2>
         </div>
       
       );
@@ -76,6 +76,11 @@ function calculateDil(part1, part2, bottle) {
   
 }
 var Dillution = React.createClass({
+  getInitialState: function() {
+    return {
+      active: false
+    }
+  },
   dilClickHandler: function() {
     this.props.updateDil(this.props.part1, this.props.part2);
   },
@@ -88,12 +93,21 @@ var Dillution = React.createClass({
   }
 });
 var Bottle = React.createClass({
+  getInitialState: function() {
+    return {
+      active: false
+    }
+  },
   bottleClickHandler: function() {
     this.props.updateBottle(this.props.size);
+    var active = !this.state.active;
+    this.setState({
+      active: active
+    });
   },
   render: function() {
     return(
-      <button type="button" className="btn btn-default" onClick={this.bottleClickHandler}>
+      <button type="button" className={this.state.active ? 'btn btn-default' : 'btn btn-default'} onClick={this.bottleClickHandler}>
         {this.props.name}
       </button>
     );
@@ -103,12 +117,17 @@ var Bottle = React.createClass({
 var popularDil = [
   {name: '1:2', part1: 1, part2: 2},
   {name: '1:4', part1: 1, part2: 4},
-  {name: '1:5', part1: 1, part2: 5}
+  {name: '1:5', part1: 1, part2: 5},
+  {name: '1:12', part1: 1, part2: 12},
+  {name: '1:20', part1: 1, part2: 20}
 ];
 var bottles = [
   {name: '100ml', size: 100},
   {name: '200ml', size: 200},
   {name: '500ml', size: 500},
+  {name: '1000ml', size: 1000},
+  {name: '1500ml', size: 1500},
+  {name: '15l', size: 15000}
 ];
 
 React.render(

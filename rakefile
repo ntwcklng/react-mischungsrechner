@@ -5,6 +5,6 @@ end
 
 desc "Build JSX"
 task :build do
-  exec("browser-sync start --server --files "*"")
+  exec("browser-sync start --server --files '*'")
   exec("jsx -x jsx --no-cache-dir components/ build/")
 end
