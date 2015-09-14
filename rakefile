@@ -1,0 +1,9 @@
+require 'rake'
+def exec(cmd)
+  system "#{cmd}"
+end
+
+desc "Build JSX"
+task :build do
+  exec("jsx -x jsx --no-cache-dir components/ build/")
+end
